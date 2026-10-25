@@ -5,7 +5,10 @@ DEVICE  := GW2AR-LV18QN88C8/I7
 FAMILY  := GW2A-18C
 FREQ    := 27
 BUILD   := build
-PORT    ?= /dev/tty.usbserial-20250303171
+# macOS: /dev/tty.* no abre hasta que hay carrier y, si abre, hace eco.
+# El de la UART es el callout /dev/cu.* con el mismo sufijo.
+PORT    ?= /dev/cu.usbserial-20250303171
+PORT_CU := $(patsubst /dev/tty.%,/dev/cu.%,$(PORT))
 
 YOSYS    ?= yosys
 NEXTPNR  ?= nextpnr-himbaechel
@@ -73,13 +76,16 @@ demo:
 	$(MAKE) -C firmware
 
 term:
-	@test -n "$(PORT)" || (echo "Pasa el puerto: make term PORT=/dev/cu.usbmodemXXX"; exit 1)
-	litex_term $(PORT)
+	@test -n "$(PORT_CU)" || (echo "Pasa el puerto: make term PORT=/dev/cu.usbmodemXXX"; exit 1)
+	litex_term $(PORT_CU)
 
 term-demo: demo
-	@test -n "$(PORT)" || (echo "Pasa el puerto: make term-demo PORT=/dev/cu.usbmodemXXX"; exit 1)
-	litex_term --kernel firmware/kyma_demo.bin $(PORT)
+	@test -n "$(PORT_CU)" || (echo "Pasa el puerto: make term-demo PORT=/dev/cu.usbmodemXXX"; exit 1)
+	litex_term --safe --kernel firmware/kyma_demo.bin $(PORT_CU)
 
 clean:
 	rm -rf $(BUILD)
+	$(MAKE) -C firmware clean || true
+
+firmware_clean:
 	$(MAKE) -C firmware clean || true

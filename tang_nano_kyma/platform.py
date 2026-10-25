@@ -75,8 +75,8 @@ _io = [
     ("rgb_led", 0, Pins("79"), IOStandard("LVCMOS33")),
 
     # Active-low buttons S1 (88) and S2 (87).
-    ("btn", 0, Pins("88"), IOStandard("LVCMOS33")),
-    ("btn", 1, Pins("87"), IOStandard("LVCMOS33")),
+    ("btn", 0, Pins("88"), IOStandard("LVCMOS33"), Misc("PULL_MODE=UP")),
+    ("btn", 1, Pins("87"), IOStandard("LVCMOS33"), Misc("PULL_MODE=UP")),
 
     # 64 Mbit SDRAM inside the GW2AR package. These balls are not user IOs:
     # an integer width tells LiteX to emit the vendor net name and skip IO_LOC.

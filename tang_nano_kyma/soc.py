@@ -143,7 +143,10 @@ def main():
 
     if args.flash:
         prog = soc.platform.create_programmer()
-        prog.flash(0, builder.get_bitstream_filename(mode="flash"), external=True)
+        # Onboard configuration flash, reached through JTAG. The MSPI pins
+        # are the LEDs once the bitstream is running, so --external-flash
+        # cannot talk to this chip.
+        prog.flash(0, builder.get_bitstream_filename(mode="flash"), external=False)
 
 
 if __name__ == "__main__":

@@ -7,25 +7,35 @@
 
 static void delay(void)
 {
-	for (volatile unsigned i = 0; i < 100000; i++)
+	for (volatile unsigned i = 0; i < 2000000; i++)
 		;
 }
 
 int main(void)
 {
+	unsigned buttons;
+	unsigned last;
+
+	/* Poll the UART. With interrupts enabled, printf waits for a TX IRQ
+	 * that never arrives and the button loop is never reached. */
 	irq_setmask(0);
-	irq_setie(1);
+	irq_setie(0);
 	uart_init();
 
-	printf("\nKyma demo — VexRiscv on Tang Nano 20K\n");
+	kyma_leds_enable_write(1);
+	kyma_leds_pattern_write(0x3f);
+	printf("\nKyma demo, VexRiscv on Tang Nano 20K\n");
 	printf("sysclk %lu Hz\n", (unsigned long)CONFIG_CLOCK_FREQUENCY);
-	printf("S1 holds 010101, S2 holds 101010, neither lets the LEDs walk.\n");
+	printf("LEDs on means the program is running. Then hold S1 or S2.\n");
+	delay();
 
-	kyma_leds_enable_write(0);
-
+	last = 0xffffffff;
 	while (1) {
-		unsigned buttons = buttons_in_read();
-
+		buttons = buttons_in_read() & 3;
+		if (buttons != last) {
+			printf("buttons: %u\n", buttons);
+			last = buttons;
+		}
 		if (buttons & 0x1) {
 			kyma_leds_enable_write(1);
 			kyma_leds_pattern_write(0x15);
@@ -35,7 +45,6 @@ int main(void)
 		} else {
 			kyma_leds_enable_write(0);
 		}
-		delay();
 	}
 
 	return 0;
