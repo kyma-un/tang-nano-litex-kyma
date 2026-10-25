@@ -1,0 +1,9 @@
+build/
+.venv/
+__pycache__/
+*.pyc
+firmware/*.o
+firmware/*.elf
+firmware/*.bin
+firmware/*.map
+firmware/*.d

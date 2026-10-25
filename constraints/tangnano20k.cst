@@ -1,0 +1,26 @@
+// Sipeed Tang Nano 20K — GW2AR-LV18QN88C8/I7
+// Pins used by rtl/blinky.v. The full ball map lives in tang_nano_kyma/platform.py.
+//
+// clk27        4
+// led_n[5:0]   15 16 17 18 19 20
+// uart tx/rx   69 70
+// btn S1/S2    88 87
+// rgb led      79
+// spiflash     cs 60, clk 59, miso 62, mosi 61
+
+IO_LOC  "clk27" 4;
+IO_PORT "clk27" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+CLOCK_LOC "clk27" BUFG;
+
+IO_LOC  "led_n[0]" 15;
+IO_PORT "led_n[0]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC  "led_n[1]" 16;
+IO_PORT "led_n[1]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC  "led_n[2]" 17;
+IO_PORT "led_n[2]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC  "led_n[3]" 18;
+IO_PORT "led_n[3]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC  "led_n[4]" 19;
+IO_PORT "led_n[4]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+IO_LOC  "led_n[5]" 20;
+IO_PORT "led_n[5]" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
